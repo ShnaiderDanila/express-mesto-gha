@@ -22,4 +22,6 @@ app.use('/users', require('./routes/users'));
 
 app.use('/cards', require('./routes/cards'));
 
+app.use('*', require('./routes/nonExistent'));
+
 app.listen(PORT, () => {});
