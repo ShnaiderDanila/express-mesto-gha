@@ -10,7 +10,7 @@ const updateOptions = {
 };
 
 const getCards = (req, res) => {
-  Card.find({})
+  Card.find()
     .populate(['owner', 'likes'])
     .then((cards) => {
       if (cards.length === 0) {
