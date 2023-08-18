@@ -7,7 +7,6 @@ const BAD_REQUEST_ERROR = 400;
 const updateOptions = {
   new: true,
   runValidators: true,
-  upsert: true,
 };
 
 const getCards = (req, res) => {

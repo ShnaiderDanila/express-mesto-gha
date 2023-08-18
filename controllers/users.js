@@ -7,7 +7,6 @@ const BAD_REQUEST_ERROR = 400;
 const updateOptions = {
   new: true,
   runValidators: true,
-  upsert: true,
 };
 
 const getUsers = (req, res) => {
@@ -59,7 +58,7 @@ const updateUserProfile = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       }
       return res.status(DEFAULT_ERROR).send({ message: err.message });
@@ -76,7 +75,7 @@ const updateUserAvatar = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       }
       return res.status(DEFAULT_ERROR).send({ message: err.message });
