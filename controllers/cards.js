@@ -10,11 +10,11 @@ const updateOptions = {
 };
 
 const getCards = (req, res) => {
-  Card.find()
+  Card.find({})
     .populate(['owner', 'likes'])
     .then((cards) => {
       if (cards.length === 0) {
-        return res.status(NOT_FOUND_ERROR).send({ message: 'Карточки не найдены.' });
+        return {};
       }
       return res.send(cards);
     })
