@@ -14,7 +14,7 @@ const getCards = (req, res) => {
     .populate(['owner', 'likes'])
     .then((cards) => {
       if (cards.length === 0) {
-        return {};
+        return res.status(NOT_FOUND_ERROR).send({});
       }
       return res.send(cards);
     })
