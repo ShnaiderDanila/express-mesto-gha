@@ -3,6 +3,7 @@ const Card = require('../models/card');
 const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
 const BAD_REQUEST_ERROR = 400;
+const CREATED_STATUS = 201;
 
 const updateOptions = {
   new: true,
@@ -23,7 +24,7 @@ const getCards = (req, res) => {
 const createCard = (req, res) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
-    .then((card) => res.send(card))
+    .then((card) => res.status(CREATED_STATUS).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при создании карточки.' });
@@ -54,7 +55,7 @@ const likeCard = (req, res) => {
       if (!card) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Передан несуществующий _id:${req.params.cardId} карточки.` });
       }
-      return res.send(card);
+      return res.status(CREATED_STATUS).send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
