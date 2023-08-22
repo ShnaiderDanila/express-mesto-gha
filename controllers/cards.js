@@ -12,10 +12,7 @@ const getCards = (req, res) => {
   Card.find({})
     .populate(['owner', 'likes'])
     .then((cards) => {
-      if (cards.length === 0) {
-        return res.send([]);
-      }
-      return res.send(cards);
+      res.send(cards);
     })
     .catch((err) => {
       console.error(err);

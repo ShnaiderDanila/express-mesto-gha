@@ -11,10 +11,7 @@ const updateOptions = {
 const getUsers = (req, res) => {
   User.find({})
     .then((users) => {
-      if (users.length === 0) {
-        return res.status(NOT_FOUND_ERROR).send({ message: 'Пользователи не найдены.' });
-      }
-      return res.send(users);
+      res.send(users);
     })
     .catch((err) => {
       console.error(err);
