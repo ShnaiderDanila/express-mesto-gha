@@ -6,7 +6,6 @@ const BAD_REQUEST_ERROR = 400;
 
 const updateOptions = {
   new: true,
-  runValidators: true,
 };
 
 const getUsers = (req, res) => {
