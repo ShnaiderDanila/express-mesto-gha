@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const routes = require('./routes/index');
 
 const app = express();
 const { PORT = 3000 } = process.env;
@@ -13,14 +14,9 @@ app.use((req, res, next) => {
   req.user = {
     _id: '64df1377bfe76ffdb8c5a68a',
   };
-
   next();
 });
 
-app.use('/users', require('./routes/users'));
-
-app.use('/cards', require('./routes/cards'));
-
-app.use('*', require('./routes/nonExistent'));
+app.use(routes);
 
 app.listen(PORT, () => {});
