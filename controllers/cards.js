@@ -1,6 +1,5 @@
 const Card = require('../models/card');
 
-const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
@@ -18,7 +17,10 @@ const getCards = (req, res) => {
       }
       return res.send(cards);
     })
-    .catch((err) => res.status(DEFAULT_ERROR).send({ message: err.message }));
+    .catch((err) => {
+      console.error(err);
+      res.send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 const createCard = (req, res) => {
@@ -29,7 +31,8 @@ const createCard = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при создании карточки.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -45,7 +48,8 @@ const deleteCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные для удаления карточки.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -61,7 +65,8 @@ const likeCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные для постановки лайка.' });
       }
-      return res.status(DEFAULT_ERROR).send({ err });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -77,7 +82,8 @@ const dislikeCard = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные для снятия лайка.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 

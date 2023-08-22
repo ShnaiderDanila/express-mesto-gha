@@ -1,6 +1,5 @@
 const User = require('../models/user');
 
-const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
@@ -17,7 +16,10 @@ const getUsers = (req, res) => {
       }
       return res.send(users);
     })
-    .catch((err) => res.status(DEFAULT_ERROR).send({ message: err.message }));
+    .catch((err) => {
+      console.error(err);
+      res.send({ message: 'На сервере произошла ошибка' });
+    });
 };
 
 const getUser = (req, res) => {
@@ -32,7 +34,8 @@ const getUser = (req, res) => {
       if (err.name === 'CastError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные пользователя.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -44,7 +47,8 @@ const createUser = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при создании пользователя.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -61,7 +65,8 @@ const updateUserProfile = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -78,7 +83,8 @@ const updateUserAvatar = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       }
-      return res.status(DEFAULT_ERROR).send({ message: err.message });
+      console.error(err);
+      return res.send({ message: 'На сервере произошла ошибка' });
     });
 };
 
