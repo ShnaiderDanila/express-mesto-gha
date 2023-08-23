@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Card = require('../models/card');
 
+const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
@@ -13,7 +14,7 @@ const getCards = (req, res) => {
     })
     .catch((err) => {
       console.error(err);
-      res.send({ message: 'На сервере произошла ошибка' });
+      res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -26,7 +27,7 @@ const createCard = (req, res) => {
       if (err instanceof mongoose.Error.ValidationError) {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при создании карточки.' });
       }
-      return res.send({ message: 'На сервере произошла ошибка' });
+      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -44,7 +45,7 @@ const deleteCard = (req, res) => {
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Карточка с указанным _id:${req.params.cardId} не найдена.` });
       }
-      return res.send({ message: 'На сервере произошла ошибка' });
+      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -62,7 +63,7 @@ const likeCard = (req, res) => {
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Передан несуществующий _id:${req.params.cardId} карточки.` });
       }
-      return res.send({ message: 'На сервере произошла ошибка' });
+      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
@@ -80,7 +81,7 @@ const dislikeCard = (req, res) => {
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Передан несуществующий _id:${req.params.cardId} карточки.` });
       }
-      return res.send({ message: 'На сервере произошла ошибка' });
+      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
 };
 
