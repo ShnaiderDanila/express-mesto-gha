@@ -48,9 +48,8 @@ const createUser = (req, res) => {
     });
 };
 
-const updateUserProfile = (req, res) => {
-  const { name, about } = req.body;
-  User.findByIdAndUpdate(req.user._id, { name, about }, { new: true })
+const updateUser = (req, res, data) => {
+  User.findByIdAndUpdate(req.user._id, data, { new: true })
     .orFail()
     .then((user) => {
       res.send(user);
@@ -58,7 +57,7 @@ const updateUserProfile = (req, res) => {
     .catch((err) => {
       console.error(err);
       if (err instanceof mongoose.Error.ValidationError) {
-        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
+        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные' });
       }
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Пользователь с указанным _id:${req.params.userId} не найден.` });
@@ -67,23 +66,14 @@ const updateUserProfile = (req, res) => {
     });
 };
 
+const updateUserProfile = (req, res) => {
+  const { name, about } = req.body;
+  updateUser(req, res, { name, about });
+};
+
 const updateUserAvatar = (req, res) => {
   const { avatar } = req.body;
-  User.findByIdAndUpdate(req.user._id, { avatar }, { new: true })
-    .orFail()
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      console.error(err);
-      if (err instanceof mongoose.Error.ValidationError) {
-        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
-      }
-      if (err instanceof mongoose.Error.DocumentNotFoundError) {
-        return res.status(NOT_FOUND_ERROR).send({ message: `Пользователь с указанным _id:${req.params.userId} не найден.` });
-      }
-      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
-    });
+  updateUser(req, res, { avatar });
 };
 
 module.exports = {
