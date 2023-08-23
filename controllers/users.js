@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const User = require('../models/user');
 
 const NOT_FOUND_ERROR = 404;
@@ -28,7 +29,7 @@ const getUser = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err instanceof mongoose.Error.CastError) {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные пользователя.' });
       }
       console.error(err);
@@ -41,7 +42,7 @@ const createUser = (req, res) => {
   User.create({ name, about, avatar })
     .then((user) => res.status(CREATED_STATUS).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при создании пользователя.' });
       }
       console.error(err);
@@ -59,7 +60,7 @@ const updateUserProfile = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       }
       console.error(err);
@@ -77,7 +78,7 @@ const updateUserAvatar = (req, res) => {
       return res.send(user);
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err instanceof mongoose.Error.ValidationError) {
         return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       }
       console.error(err);
