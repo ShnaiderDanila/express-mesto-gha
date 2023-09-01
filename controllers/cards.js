@@ -5,6 +5,7 @@ const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
+const OK_STATUS = 200;
 
 const getCards = (req, res) => {
   Card.find({})
@@ -49,16 +50,16 @@ const deleteCard = (req, res) => {
     });
 };
 
-const likeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.cardId, { $addToSet: { likes: req.user._id } }, { new: true })
+const toggleLikeStatus = (req, res, data, status) => {
+  Card.findByIdAndUpdate(req.params.cardId, data, { new: true })
     .orFail()
     .then((card) => {
-      res.status(CREATED_STATUS).send(card);
+      res.status(status).send(card);
     })
     .catch((err) => {
       console.error(err);
       if (err instanceof mongoose.Error.CastError) {
-        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные для постановки лайка.' });
+        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные.' });
       }
       if (err instanceof mongoose.Error.DocumentNotFoundError) {
         return res.status(NOT_FOUND_ERROR).send({ message: `Передан несуществующий _id:${req.params.cardId} карточки.` });
@@ -67,22 +68,12 @@ const likeCard = (req, res) => {
     });
 };
 
+const likeCard = (req, res) => {
+  toggleLikeStatus(req, res, { $addToSet: { likes: req.user._id } }, CREATED_STATUS);
+};
+
 const dislikeCard = (req, res) => {
-  Card.findByIdAndUpdate(req.params.cardId, { $pull: { likes: req.user._id } }, { new: true })
-    .orFail()
-    .then((card) => {
-      res.send(card);
-    })
-    .catch((err) => {
-      console.error(err);
-      if (err instanceof mongoose.Error.CastError) {
-        return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные для снятия лайка.' });
-      }
-      if (err instanceof mongoose.Error.DocumentNotFoundError) {
-        return res.status(NOT_FOUND_ERROR).send({ message: `Передан несуществующий _id:${req.params.cardId} карточки.` });
-      }
-      return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
-    });
+  toggleLikeStatus(req, res, { $pull: { likes: req.user._id } }, OK_STATUS);
 };
 
 module.exports = {
