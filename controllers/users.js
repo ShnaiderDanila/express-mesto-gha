@@ -1,9 +1,12 @@
+const { JWT_SECRET } = process.env;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
+const UNAUTHORIZED_ERROR = 401;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
 
@@ -83,10 +86,29 @@ const updateUserAvatar = (req, res) => {
   updateUser(req, res, { avatar });
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+  User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: '7d' });
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+          sameSite: true,
+        })
+        .send(('Аутентификация успешно выполнена'));
+    })
+    .catch((err) => {
+      res.status(UNAUTHORIZED_ERROR).send({ message: err.message });
+    });
+};
+
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUserProfile,
   updateUserAvatar,
+  login,
 };
