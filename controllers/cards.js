@@ -3,6 +3,7 @@ const Card = require('../models/card');
 
 const DEFAULT_ERROR = 500;
 const NOT_FOUND_ERROR = 404;
+const FORBIDDEN_ERROR = 403;
 const BAD_REQUEST_ERROR = 400;
 const CREATED_STATUS = 201;
 const OK_STATUS = 200;
@@ -33,10 +34,16 @@ const createCard = (req, res) => {
 };
 
 const deleteCard = (req, res) => {
-  Card.findByIdAndRemove(req.params.cardId)
-    .orFail()
+  Card.findById(req.params.cardId)
+    .orFail
     .then((card) => {
-      res.send(card);
+      if (card.owner !== req.user._id) {
+        return res.status(FORBIDDEN_ERROR).send('Нет прав на удаление карточки');
+      }
+      return Card.findByIdAndRemove(card._id)
+        .then(() => {
+          res.send(card);
+        });
     })
     .catch((err) => {
       console.error(err);
