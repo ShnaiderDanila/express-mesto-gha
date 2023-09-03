@@ -21,8 +21,8 @@ const getUsers = (req, res) => {
     });
 };
 
-const getUser = (req, res) => {
-  User.findById(req.params.userId)
+const findUserById = (req, res, id) => {
+  User.findById(id)
     .orFail()
     .then((user) => {
       res.send(user);
@@ -37,6 +37,14 @@ const getUser = (req, res) => {
       }
       return res.status(DEFAULT_ERROR).send({ message: 'На сервере произошла ошибка' });
     });
+};
+
+const getUser = (req, res) => {
+  findUserById(req, res, req.params.userId);
+};
+
+const getCurrentUser = (req, res) => {
+  findUserById(req, res, req.user._id);
 };
 
 const createUser = (req, res) => {
@@ -107,6 +115,7 @@ const login = (req, res) => {
 module.exports = {
   getUsers,
   getUser,
+  getCurrentUser,
   createUser,
   updateUserProfile,
   updateUserAvatar,
