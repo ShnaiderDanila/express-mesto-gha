@@ -4,7 +4,7 @@ const DEFAULT_ERROR = 500;
 const CONFLICT_ERROR = 409;
 const BAD_REQUEST_ERROR = 400;
 
-const handleError = (err, res) => {
+const handleError = (err, res, next) => {
   // Оповещение разработчика о возникшей ошибке
   console.error(err);
   // если у ошибки нет статуса, выставляем 500
@@ -15,7 +15,7 @@ const handleError = (err, res) => {
   if (err.code === 11000) {
     return res.status(CONFLICT_ERROR).send({ message: 'Пользователь с таким email уже зарегистрирован.' });
   }
-  return res
+  res
     .status(statusCode)
     .send({
       // проверяем статус и выставляем сообщение в зависимости от него
@@ -23,6 +23,7 @@ const handleError = (err, res) => {
         ? 'На сервере произошла ошибка'
         : message,
     });
+  return next();
 };
 
 module.exports = handleError;
