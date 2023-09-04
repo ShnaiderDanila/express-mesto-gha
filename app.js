@@ -2,9 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const routes = require('./routes/index');
 const { createUser, login } = require('./controllers/users');
+const routes = require('./routes/index');
 const auth = require('./middlewares/auth');
+const handleError = require('./errors/errorHandler');
 
 const app = express();
 
@@ -24,17 +25,6 @@ app.use(auth);
 
 app.use(routes);
 
-app.use((err, res) => {
-  // если у ошибки нет статуса, выставляем 500
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      // проверяем статус и выставляем сообщение в зависимости от него
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-});
+app.use(handleError);
 
-app.listen(PORT, () => {});
+app.listen(PORT, () => { });
