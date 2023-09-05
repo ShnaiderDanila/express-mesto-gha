@@ -7,7 +7,7 @@ const { userIdValidation, userProfileValidation, userAvatarValidation } = requir
 
 usersRouter.get('/', getUsers);
 usersRouter.get('/:userId', userIdValidation, getUser);
-usersRouter.get('/users/me', getCurrentUser);
+usersRouter.get('/me', getCurrentUser);
 usersRouter.patch('/me', userProfileValidation, updateUserProfile);
 usersRouter.patch('/me/avatar', userAvatarValidation, updateUserAvatar);
 
