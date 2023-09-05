@@ -4,9 +4,9 @@ const regex = /^https?:\/\/(w{3}\.)?[-a-z0-9._~:?#[\]@!$&'()*+,;=/]+\.[a-z0-9]+\
 
 const signUpValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
-    avatar: Joi.string().required().pattern(regex),
+    name: Joi.string().min(2).max(30),
+    about: Joi.string().min(2).max(30),
+    avatar: Joi.string().pattern(regex),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
