@@ -4,7 +4,7 @@ const DEFAULT_ERROR = 500;
 const CONFLICT_ERROR = 409;
 const BAD_REQUEST_ERROR = 400;
 
-const handleError = (err, res, next) => {
+const handleError = (err, req, res, next) => {
   // Оповещение разработчика о возникшей ошибке
   console.error(err);
   // если у ошибки нет статуса, выставляем 500
@@ -19,9 +19,7 @@ const handleError = (err, res, next) => {
     .status(statusCode)
     .send({
       // проверяем статус и выставляем сообщение в зависимости от него
-      message: statusCode === DEFAULT_ERROR
-        ? 'На сервере произошла ошибка'
-        : message,
+      message: statusCode === DEFAULT_ERROR ? 'На сервере произошла ошибка' : message,
     });
   return next();
 };
