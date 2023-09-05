@@ -85,7 +85,7 @@ const login = (req, res, next) => {
           maxAge: 3600000 * 24 * 7,
           httpOnly: true,
         })
-        .send(('Аутентификация успешно выполнена'));
+        .send({ message: 'Аутентификация успешно выполнена!' });
     })
     .catch(next);
 };
