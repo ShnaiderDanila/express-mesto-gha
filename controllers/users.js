@@ -54,7 +54,7 @@ const createUser = (req, res, next) => {
     .catch(next);
 };
 
-const updateUser = (req, res, data, next) => {
+const updateUser = (req, res, next, data) => {
   User.findByIdAndUpdate(req.user._id, data, { new: true, runValidators: true })
     .orFail(() => {
       throw new NotFoundError('Пользователь с указанным id не найден.');

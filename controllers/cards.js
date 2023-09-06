@@ -38,7 +38,7 @@ const deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-const toggleLike = (req, res, data, status, next) => {
+const toggleLike = (req, res, next, data, status) => {
   Card.findByIdAndUpdate(req.params.cardId, data, { new: true })
     .orFail(() => {
       throw new NotFoundError('Карточка с указанным id не найдена.');

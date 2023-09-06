@@ -4,10 +4,10 @@ const DEFAULT_ERROR = 500;
 const CONFLICT_ERROR = 409;
 const BAD_REQUEST_ERROR = 400;
 
-const handleError = (err, req, res, next) => {
+const handleErrors = (err, req, res, next) => {
   // Оповещение разработчика о возникшей ошибке
   console.error(err);
-  // если у ошибки нет статуса, выставляем 500
+  // Если у ошибки нет статуса, выставляем 500
   const { statusCode = DEFAULT_ERROR, message } = err;
   if (err instanceof mongoose.Error.CastError || err instanceof mongoose.Error.ValidationError) {
     return res.status(BAD_REQUEST_ERROR).send({ message: 'Переданы некорректные данные.' });
@@ -24,4 +24,4 @@ const handleError = (err, req, res, next) => {
   return next();
 };
 
-module.exports = handleError;
+module.exports = handleErrors;
