@@ -50,11 +50,11 @@ const toggleLike = (req, res, next, data, status) => {
 };
 
 const likeCard = (req, res, next) => {
-  toggleLike(req, res, { $addToSet: { likes: req.user._id } }, CREATED_STATUS, next);
+  toggleLike(req, res, next, { $addToSet: { likes: req.user._id } }, CREATED_STATUS);
 };
 
 const dislikeCard = (req, res, next) => {
-  toggleLike(req, res, { $pull: { likes: req.user._id } }, OK_STATUS, next);
+  toggleLike(req, res, next, { $pull: { likes: req.user._id } }, OK_STATUS);
 };
 
 module.exports = {

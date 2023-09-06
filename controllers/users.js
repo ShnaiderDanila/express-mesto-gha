@@ -67,12 +67,12 @@ const updateUser = (req, res, next, data) => {
 
 const updateUserProfile = (req, res, next) => {
   const { name, about } = req.body;
-  updateUser(req, res, { name, about }, next);
+  updateUser(req, res, next, { name, about });
 };
 
 const updateUserAvatar = (req, res, next) => {
   const { avatar } = req.body;
-  updateUser(req, res, { avatar }, next);
+  updateUser(req, res, next, { avatar });
 };
 
 const login = (req, res, next) => {
