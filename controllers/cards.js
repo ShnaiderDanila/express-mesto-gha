@@ -1,8 +1,7 @@
+const { CREATED_STATUS } = require('../utils/config');
 const Card = require('../models/card');
 const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
-
-const CREATED_STATUS = 201;
 
 const getCards = (req, res, next) => {
   Card.find({})

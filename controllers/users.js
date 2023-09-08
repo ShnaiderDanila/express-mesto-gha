@@ -1,10 +1,8 @@
-const JWT_SECRET = 'a1c49c67fb2f7195808cf575e9ba368280801928e48c1dc71186a5df3ed89a9f';
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { CREATED_STATUS, JWT_SECRET } = require('../utils/config');
 const User = require('../models/user');
 const NotFoundError = require('../errors/NotFoundError');
-
-const CREATED_STATUS = 201;
 
 const getUsers = (req, res, next) => {
   User.find({})

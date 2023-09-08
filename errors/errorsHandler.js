@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 
-const DEFAULT_ERROR = 500;
-const CONFLICT_ERROR = 409;
-const BAD_REQUEST_ERROR = 400;
+const { DEFAULT_ERROR, CONFLICT_ERROR, BAD_REQUEST_ERROR } = require('../utils/config');
 
 const handleErrors = (err, req, res, next) => {
   // Оповещение разработчика о возникшей ошибке

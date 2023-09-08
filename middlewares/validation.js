@@ -1,6 +1,5 @@
 const { celebrate, Joi } = require('celebrate');
-
-const regex = /^https?:\/\/(w{3}\.)?[-a-z0-9._~:?#[\]@!$&'()*+,;=/]+\.[a-z0-9]+\/?[-a-z0-9._~:?#[\]@!$&'()*+,;=/]*#?$/i;
+const { regex } = require('../utils/config');
 
 const signUpValidation = celebrate({
   body: Joi.object().keys({
