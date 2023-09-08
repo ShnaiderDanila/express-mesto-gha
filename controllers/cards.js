@@ -3,7 +3,6 @@ const NotFoundError = require('../errors/NotFoundError');
 const ForbiddenError = require('../errors/ForbiddenError');
 
 const CREATED_STATUS = 201;
-const OK_STATUS = 200;
 
 const getCards = (req, res, next) => {
   Card.find({})
@@ -38,23 +37,23 @@ const deleteCard = (req, res, next) => {
     .catch(next);
 };
 
-const toggleLike = (req, res, next, data, status) => {
+const toggleLike = (req, res, next, data) => {
   Card.findByIdAndUpdate(req.params.cardId, data, { new: true })
     .orFail(() => {
       throw new NotFoundError('Карточка с указанным id не найдена.');
     })
     .then((card) => {
-      res.status(status).send(card);
+      res.send(card);
     })
     .catch(next);
 };
 
 const likeCard = (req, res, next) => {
-  toggleLike(req, res, next, { $addToSet: { likes: req.user._id } }, CREATED_STATUS);
+  toggleLike(req, res, next, { $addToSet: { likes: req.user._id } });
 };
 
 const dislikeCard = (req, res, next) => {
-  toggleLike(req, res, next, { $pull: { likes: req.user._id } }, OK_STATUS);
+  toggleLike(req, res, next, { $pull: { likes: req.user._id } });
 };
 
 module.exports = {
